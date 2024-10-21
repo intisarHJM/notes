@@ -676,3 +676,245 @@ $user = $statement->fetch(PDO::FETCH_ASSOC);
 ```
 - `fetch()`: This method retrieves the next row from the result set. The `PDO::FETCH_ASSOC` parameter specifies that the row should be returned as an associative array, where the column names are the keys.
 - `$user`: This variable will hold the fetched user data if a user with the provided email exists in the database. If no such user exists, `$user` will be `false`.
+
+# Uploading Files
+The following is an example of uploading a file to a server by using HTML and PHP.
+
+**Note:** This code is insecure, in production you need to validate the request content before you use the file.
+
+```php
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Example</title>
+</head>
+<body>
+    <h2>Upload an Image</h2>
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
+        Select image to upload:
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="submit" value="Upload Image" name="submit">
+    </form>
+</body>
+</html>
+```
+
+Explination:
+
+1. `$target_dir = "uploads/";`
+   - This line sets the directory where uploaded files will be stored.
+   - "uploads/" is a relative path, meaning it's a subdirectory in the same directory as the PHP script.
+   - The trailing slash (/) is important to ensure the proper formation of the full path.
+
+2. `$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);`
+   - This line constructs the full path for the uploaded file.
+   - `$target_dir` is the directory we defined earlier ("uploads/").
+   - `$_FILES["fileToUpload"]["name"]` is the original name of the uploaded file.
+   - `basename()` is a PHP function that extracts the filename from a path. It's used here as a simple security measure to prevent directory traversal attacks.
+   - The `.` operator concatenates the directory path with the filename.
+
+3. `if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {`
+   - This line attempts to move the uploaded file from its temporary location to the target location.
+   - `move_uploaded_file()` is a PHP function specifically designed for handling uploaded files securely.
+   - `$_FILES["fileToUpload"]["tmp_name"]` is the temporary filename of the uploaded file on the server.
+   - `$target_file` is the destination path we constructed in step 2.
+   - The function returns true if the move was successful, false otherwise.
+   - The `if` statement allows us to perform different actions based on whether the move was successful or not.
+
+4. `action="<?php echo $_SERVER['PHP_SELF'] ?>`:
+    - The action attribute specifies where to send the form-data when the form is submitted.
+    - $_SERVER['PHP_SELF'] is a PHP superglobal variable that returns the filename of the currently executing script.
+    - Using this means the form will submit to the same page it's on.
+
+6. `enctype="multipart/form-data"`:
+    - This attribute is crucial for file uploads.
+    - It specifies how the form-data should be encoded when submitted to the server.
+    - "multipart/form-data" is required when the form includes file upload controls.
+
+Some additional notes:
+- "fileToUpload" in `$_FILES["fileToUpload"]` corresponds to the `name` attribute of the file input field in the HTML form.
+- This code doesn't include any validation or security checks, which would be crucial in a real-world scenario.
+- The `move_uploaded_file()` function automatically handles some security concerns, such as ensuring that the file is indeed an uploaded file.
+
+## $_FILES
+
+The `$_FILES` array in PHP contains information about uploaded files. It's a superglobal array that's automatically created when a file is uploaded through an HTML form. Here's a typical structure of the `$_FILES` array for a single file upload:
+
+```php
+$_FILES['input_name'] = array(
+    'name'      => 'filename.jpg',
+    'type'      => 'image/jpeg',
+    'size'      => 12345,
+    'tmp_name'  => '/tmp/php/php1h4j1o',
+    'error'     => 0
+);
+```
+
+1. 'name': The original name of the file on the client machine.
+
+2. 'type': The MIME type of the file, if the browser provided this information. An example would be "image/jpeg" for JPEG images, "application/pdf" for PDF files, etc.
+
+3. 'size': The size of the uploaded file in bytes.
+
+4. 'tmp_name': The temporary filename of the file in which the uploaded file was stored on the server.
+
+5. 'error': The error code associated with this file upload. 0 means no error.
+
+For multiple file uploads, the structure would be slightly different:
+
+```php
+$_FILES['input_name'] = array(
+    'name'      => array('filename1.jpg', 'filename2.png'),
+    'type'      => array('image/jpeg', 'image/png'),
+    'size'      => array(12345, 67890),
+    'tmp_name'  => array('/tmp/php/php1h4j1o', '/tmp/php/php6hst32'),
+    'error'     => array(0, 0)
+);
+```
+
+The error codes you might encounter are:
+
+- 0: `UPLOAD_ERR_OK` (No error)
+- 1: `UPLOAD_ERR_INI_SIZE` (Exceeds upload_max_filesize in php.ini)
+- 2: `UPLOAD_ERR_FORM_SIZE` (Exceeds MAX_FILE_SIZE in HTML form)
+- 3: `UPLOAD_ERR_PARTIAL` (File was only partially uploaded)
+- 4: `UPLOAD_ERR_NO_FILE` (No file was uploaded)
+- 6: `UPLOAD_ERR_NO_TMP_DIR` (Missing a temporary folder)
+- 7: `UPLOAD_ERR_CANT_WRITE` (Failed to write file to disk)
+- 8: `UPLOAD_ERR_EXTENSION` (A PHP extension stopped the file upload)
+
+When working with file uploads, it's important to always check the 'error' value before processing the file to ensure the upload was successful.
+
+# Upload Validation
+
+To validate an updated file, you can do the following:
+
+1. Validate file types:
+```php
+$allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+$file_type = $_FILES['fileToUpload']['type'];
+
+if (!in_array($file_type, $allowed_types)) {
+    exit("Error: Only JPG, PNG, and GIF files are allowed.");
+}
+```
+Explanation: This code defines an array of allowed MIME types. It then checks if the uploaded file's type is in this array. If not, it stops execution with an error message.
+
+2. Check file size:
+```php
+$max_size = 5 * 1024 * 1024; // 5 MB in bytes
+if ($_FILES['fileToUpload']['size'] > $max_size) {
+    exit("Error: File size cannot exceed 5 MB.");
+}
+```
+Explanation: This sets a maximum file size (5 MB in this case) and checks if the uploaded file exceeds this limit. If it does, it stops execution with an error message.
+
+3. Generate unique filenames:
+```php
+$file_name = basename($_FILES["fileToUpload"]["name"]);
+$file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+$unique_name = uniqid() . '.' . $file_ext;
+$target_file = $target_dir . $unique_name;
+```
+Explanation: This generates a unique filename using `uniqid()` function and appends the original file extension. This ensures that each upload gets a unique name, preventing overwrites.
+
+4. Implement user authentication and authorization:
+```php
+session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    exit("Error: You don't have permission to upload files.");
+}
+```
+Explanation: This assumes you have a login system that sets session variables. It checks if the user is logged in and has the correct role before allowing the upload.
+
+5. Sanitize user inputs:
+```php
+ // Sanitize and get file information
+$file_name = htmlspecialchars(basename($_FILES["fileToUpload"]["name"]));
+```
+Explanation: This uses PHP's built-in function to sanitize the filename, removing or encoding potentially harmful characters.
+
+6. Set appropriate file permissions:
+```php
+if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+    chmod($target_file, 0644);
+    echo "File uploaded successfully.";
+}
+```
+Explanation: After moving the uploaded file, this sets its permissions to 0644 (owner can read and write, others can only read). Adjust as needed for your security requirements.
+
+7. Use a more secure upload directory outside the web root:
+```php
+$target_dir = "/var/www/uploads/";
+```
+Explanation: This sets the upload directory to a location outside the web root. Users can't directly access files in this directory through a URL, adding an extra layer of security.
+
+Putting it all to gether:
+
+```php
+<?php
+// File upload handling
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Define constants
+    $target_dir = "/var/www/uploads/";
+    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+    $max_size = 5 * 1024 * 1024; // 5 MB
+
+    // Validate file existence
+    if (!isset($_FILES['fileToUpload']) || $_FILES['fileToUpload']['error'] === UPLOAD_ERR_NO_FILE) {
+        exit("Error: No file was uploaded.");
+    }
+
+    // Validate file type
+    $file_type = $_FILES['fileToUpload']['type'];
+    if (!in_array($file_type, $allowed_types)) {
+        exit("Error: Only JPG, PNG, and GIF files are allowed.");
+    }
+
+    // Check file size
+    if ($_FILES['fileToUpload']['size'] > $max_size) {
+        exit("Error: File size cannot exceed 5 MB.");
+    }
+
+    // Sanitize filename
+    $original_filename = htmlspecialchars(basename($_FILES["fileToUpload"]["name"]), ENT_QUOTES, 'UTF-8');
+    $file_ext = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+
+    // Generate a unique name and check if it already exists
+    do {
+        $unique_name = uniqid() . '.' . $file_ext;
+        $target_file = $target_dir . $unique_name;
+    } while (file_exists($target_file));
+
+    // Attempt to upload file
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        // Set appropriate permissions
+        chmod($target_file, 0644);
+
+        // Log the upload (you should implement proper logging)
+        error_log("File uploaded: $unique_name (Original: $original_filename)");
+
+        echo "File uploaded successfully.";
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
+} else {
+    echo "No file upload attempt detected.";
+}
+?>
+```
