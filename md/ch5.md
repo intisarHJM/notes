@@ -226,8 +226,6 @@ unset($value); // break the reference with the last element
 ?>
 ```
 
-Certainly! I'd be happy to add some slides about PHP arrays to your presentation. Here's how we can incorporate this information into your existing document:
-
 ## PHP Arrays
 
 Arrays in PHP are versatile data structures that can hold multiple values under a single variable name.
