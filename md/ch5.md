@@ -382,6 +382,8 @@ print_r($matches);
 ```
 
 # Object-Oriented PHP
+**Note:** For the midterm, you are only requried to create instances from classes and use the class functions. You will not be asked to write a PHP class.
+
 ## Classes
 ```php
 <?php
