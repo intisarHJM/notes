@@ -675,6 +675,8 @@ $user = $statement->fetch(PDO::FETCH_ASSOC);
 - `fetch()`: This method retrieves the next row from the result set. The `PDO::FETCH_ASSOC` parameter specifies that the row should be returned as an associative array, where the column names are the keys.
 - `$user`: This variable will hold the fetched user data if a user with the provided email exists in the database. If no such user exists, `$user` will be `false`.
 
+# THE TOPICS AFTER THIS POINT ARE NOT INCLUDED ON THE MIDTERM
+
 # Uploading Files
 The following is an example of uploading a file to a server by using HTML and PHP.
 
@@ -743,6 +745,9 @@ Explination:
     - This attribute is crucial for file uploads.
     - It specifies how the form-data should be encoded when submitted to the server.
     - "multipart/form-data" is required when the form includes file upload controls.
+
+7. `<input type="submit" value="Upload Image" name="submit">`
+    - `type="file"` Specifies that the input element should be a file upload control, allowing users to select files from their device.
 
 Some additional notes:
 - "fileToUpload" in `$_FILES["fileToUpload"]` corresponds to the `name` attribute of the file input field in the HTML form.
