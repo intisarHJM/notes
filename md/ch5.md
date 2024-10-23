@@ -805,7 +805,7 @@ The error codes you might encounter are:
 
 When working with file uploads, it's important to always check the 'error' value before processing the file to ensure the upload was successful.
 
-# Upload Validation
+## Upload Validation
 
 To validate an updated file, you can do the following:
 
@@ -923,3 +923,103 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 ```
+
+# Downloading Files
+
+## Example
+
+```php
+<?php
+// Set the uploads directory path
+$uploadsDir = '/var/www/uploads/';
+
+// Get the requested filename from GET parameter
+$filename = isset($_GET['file']) ? basename($_GET['file']) : '';
+$filepath = $uploadsDir . $filename;
+
+// Basic security checks
+if (empty($filename) || !file_exists($filepath) || !is_file($filepath) || strpos(realpath($filepath), realpath($uploadsDir)) !== 0) {
+    header("HTTP/1.0 404 Not Found");
+    die('File not found or access denied');
+}
+
+// Get the file mime type
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mimeType = finfo_file($finfo, $filepath);
+finfo_close($finfo);
+
+// Set headers for download
+header('Content-Type: ' . $mimeType);
+header('Content-Disposition: attachment; filename="' . $filename . '"');
+header('Content-Length: ' . filesize($filepath));
+header('Cache-Control: no-cache');
+
+// Output file content
+readfile($filepath);
+exit;
+```
+
+## Explination
+
+1. Directory Setup and File Path Handling:
+```php
+$uploadsDir = '/var/www/uploads/';
+$filename = isset($_GET['file']) ? basename($_GET['file']) : '';
+$filepath = $uploadsDir . $filename;
+```
+- Sets the upload directory path
+- Gets the filename from the URL parameter (e.g., download.php?file=example.pdf)
+- `basename()` strips any directory traversal attempts (like ../../../etc/passwd)
+- Combines directory and filename to create full filepath
+
+2. Security Checks:
+```php
+if (empty($filename) || !file_exists($filepath) || !is_file($filepath) || strpos(realpath($filepath), realpath($uploadsDir)) !== 0) {
+    header("HTTP/1.0 404 Not Found");
+    die('File not found or access denied');
+}
+```
+- Checks if filename is empty
+- Verifies file exists
+- Confirms it's a file (not a directory)
+- `realpath()` check prevents directory traversal attacks by ensuring the requested file is actually in the uploads directory
+
+3. MIME Type Detection:
+```php
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mimeType = finfo_file($finfo, $filepath);
+finfo_close($finfo);
+```
+- Opens fileinfo resource
+- Detects the actual MIME type of the file
+- This helps browsers handle the file correctly
+
+4. Download Headers:
+```php
+header('Content-Type: ' . $mimeType);
+header('Content-Disposition: attachment; filename="' . $filename . '"');
+header('Content-Length: ' . filesize($filepath));
+header('Cache-Control: no-cache');
+```
+- Sets proper MIME type
+- Forces download instead of display with 'attachment'
+- Provides file size for download progress
+- Prevents caching
+
+5. File Output:
+```php
+readfile($filepath);
+exit;
+```
+- `readfile()` reads and outputs the file contents directly to the browser
+- `exit` ensures no additional content is sent
+
+To use this script:
+1. Save it in `download.php`
+2. Link to files like: `<a href="download.php?file=example.pdf">Download PDF</a>`
+
+Important security notes:
+- Always validate file types you allow for download
+- Consider implementing user authentication if files should be restricted
+- Ensure proper file permissions on the uploads directory
+- Consider rate limiting to prevent abuse
