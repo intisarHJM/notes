@@ -65,7 +65,11 @@ First, let's create a registration page where users can create an account:
 session_start();
 
 // Simple in-memory storage (replace with database in real-world scenario)
-$users = [];
+if (!isset($_SESSION["users"])) {
+    $_SESSION["users"] = [];
+}
+
+$users = $_SESSION["users"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     global $users;
@@ -162,7 +166,11 @@ session_start();
 
 // In a real-world scenario, you would fetch user data from a database
 // For this example, we'll use the in-memory storage from the registration process
-global $users;
+if (!isset($_SESSION["users"])) {
+    $_SESSION["users"] = [];
+}
+
+$users = $_SESSION["users"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
