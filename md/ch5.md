@@ -1023,3 +1023,52 @@ Important security notes:
 - Consider implementing user authentication if files should be restricted
 - Ensure proper file permissions on the uploads directory
 - Consider rate limiting to prevent abuse
+
+# PDO Transactions
+
+```php
+<?php
+
+try {
+    $pdo = new PDO("mysql:host=localhost;dbname=bank_db", "username", "password");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // Start transaction
+    $pdo->beginTransaction();
+    
+    $fromAccount = '1001';
+    $toAccount = '1002';
+    $amount = 500.00;
+    
+    // Deduct from source account
+    $stmt1 = $pdo->prepare("UPDATE accounts SET balance = balance - :amount 
+                           WHERE account_number = :from AND balance >= :amount");
+    $stmt1->execute([
+        ':amount' => $amount,
+        ':from' => $fromAccount
+    ]);
+    
+    // Add to destination account
+    $stmt2 = $pdo->prepare("UPDATE accounts SET balance = balance + :amount 
+                           WHERE account_number = :to");
+    $stmt2->execute([
+        ':amount' => $amount,
+        ':to' => $toAccount
+    ]);
+    
+    // Check if first update actually affected a row (sufficient balance)
+    if ($stmt1->rowCount() == 0) {
+        throw new Exception("Insufficient balance or invalid source account");
+    }
+    
+    // If everything is OK, commit the transaction
+    $pdo->commit();
+    echo "Transfer successful";
+    
+} catch (Exception $e) {
+    // Something went wrong, rollback the transaction
+    $pdo->rollBack();
+    echo "Transfer failed: " . $e->getMessage();
+}
+?>
+```
