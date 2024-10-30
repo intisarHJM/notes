@@ -234,241 +234,430 @@ console.log("Session started at: " + new Date());
 ```
 Outputs messages to the browser's console, useful for debugging and development purposes.
 
-## Print Page Function
-```html
-<!DOCTYPE html>
-<html>
-<body>
-<h2>Order Summary</h2>
-<p>Customer: Amir</p>
-<button onclick="window.print()">Print Invoice</button>
-</body>
-</html>
-```
-Creates a print button that triggers the browser's print dialog. This is the only way JavaScript can interact with printing functionality.
+# Syntax
 
-# Basic Variable Declarations and Operations
+1. Literals (Direct Value Representation):
+    ```javascript
+    // Number Literals
+    const integer = 42;
+    const float = 3.14;
+    const scientific = 2.998e8;
+    const binary = 0b1010;      // Binary (10)
+    const octal = 0o756;        // Octal (494)
+    const hexadecimal = 0xFF;   // Hexadecimal (255)
+
+    // String Literals
+    const single = 'Hello';
+    const double = "World";
+    const template = `Hello ${single}`;
+    const multiLine = `
+        This is a
+        multi-line
+        string
+    `;
+
+    // Boolean Literals
+    const isTrue = true;
+    const isFalse = false;
+
+    // Array Literals
+    const emptyArray = [];
+    const numbers = [1, 2, 3];
+    const mixed = [1, "two", true, [4, 5]];
+
+    // Object Literals
+    const person = {
+        name: "Amina",
+        age: 30,
+        "likes coding": true    // Property name with space
+    };
+
+    // Regular Expression Literals
+    const regex = /[A-Z]+/g;
+    ```
+
+2. Declarations and Assignments:
+    ```javascript
+    // Variable Declarations
+    let x;                  // Declaration only
+    let y = 5;             // Declaration with initialization
+    const PI = 3.14;       // Constant declaration (must be initialized)
+    var oldStyle = "old";  // Old-style declaration
+
+    // Multiple Declarations
+    let a, b, c;
+    let d = 1, e = 2, f = 3;
+
+    // Object Destructuring
+    const {name, age} = person;
+    const {name: firstName, age: years} = person;  // With aliases
+
+    // Array Destructuring
+    const [first, second] = numbers;
+    const [head, ...tail] = numbers;  // Rest operator
+
+    // Function Declarations
+    function normalFunction(a, b) {
+        return a + b;
+    }
+
+    // Function Expression
+    const multiply = function(a, b) {
+        return a * b;
+    };
+
+    // Arrow Function
+    const add = (a, b) => a + b;
+    ```
+
+3. White Space and Formatting:
+    ```javascript
+    // White space is flexible
+    let result=1+2;            // Valid but hard to read
+    let result = 1 + 2;        // Better readability
+
+    // Line breaks are flexible
+    let longString = "This is a very long string" +
+                    " that spans multiple lines" +
+                    " in the code";
+
+    // Semicolons are optional (but recommended)
+    let a = 1     // Valid
+    let b = 2;    // Also valid
+
+    // Object formatting
+    const user = {
+        name: "John",
+        age: 30,    // Trailing comma is allowed
+    };
+
+    // Function call formatting
+    someFunction(
+        argument1,
+        argument2,
+        argument3
+    );
+    ```
+
+4. Comments:
+    ```javascript
+    // Single-line comment
+
+    /* Multi-line
+    comment
+    block */
+
+    /** 
+     * Documentation comment
+     * @param {string} name - The name parameter
+     * @returns {string} A greeting message
+     */
+    function greet(name) {
+        return `Hello, ${name}!`;
+    }
+    ```
+
+5. Statement Types:
+    ```javascript
+    // Expression Statement
+    x = 5;
+    functionCall();
+
+    // Conditional Statement
+    if (condition) {
+        // code
+    }
+
+    // Loop Statement
+    for (let i = 0; i < 5; i++) {
+        // code
+    }
+
+    // Label Statement
+    loop1: for (let i = 0; i < 5; i++) {
+        continue loop1;
+    }
+
+    // Exception Handling
+    try {
+        // code that might throw error
+    } catch (error) {
+        // handle error
+    } finally {
+        // cleanup code
+    }
+    ```
+
+6. Operator Precedence:
+    ```javascript
+    // Arithmetic
+    let calculation = 2 + 3 * 4;    // 14, not 20
+
+    // Assignment with operation
+    let number = 5;
+    number += 3;    // Same as: number = number + 3
+
+    // Comparison and Logical
+    let result = (5 > 3) && (10 <= 10);  // true
+
+    // Conditional (Ternary) Operator
+    let status = temprature >= 30 ? "Hot" : "Nice";
+    ```
+
+## Valid and Invalid Names
+
 ```javascript
-let price, tax, total;    
-price = 100;          
-tax = 15;          
-total = price + tax;    
-```
-Multiple statements that declare variables and perform calculations. Each statement ends with a semicolon for proper separation.
+// Valid variable names
+let firstName = "Khalid";      // Camel case
+let last_name = "Husain";      // Snake case
+let _private = "hidden";     // Leading underscore
+let $price = 99.99;         // Dollar sign
+let π = 3.14159;            // Unicode characters allowed
+let ترحيب = "مرحبا";    // Non-Latin characters allowed
+let \u0061 = "a";           // Unicode escape sequence
+let café = "coffee";        // Accented characters
+let x1 = 1;                 // Numbers allowed (not at start)
+let $_$ = "valid";          // Multiple special chars
+let _123 = "valid";         // Underscore with numbers
 
-# Writing to HTML Element
+// Invalid variable names
+// let 1name = "invalid";    // Can't start with number
+// let my-name = "invalid";  // Hyphens not allowed
+// let my name = "invalid";  // No spaces
+// let class = "invalid";    // Reserved keyword
+// let for = "invalid";      // Reserved keyword
+// let @email = "invalid";   // @ not allowed
+// let my.name = "invalid";  // Dots not allowed
+
+// Reserved Keywords (cannot be used as identifiers)
+// break     case      catch     class     const     continue
+// debugger  default   delete    do        else      export
+// extends   finally   for       function  if        import
+// in        instance  new       return    super     switch
+// this      throw     try       typeof    var       void
+// while     with      yield
+```
+
+## Examples
+
+1. Functions:
+    ```javascript
+    // Regular function
+    function add(a, b) {
+        return a + b;
+    }
+
+    // Arrow function
+    const multiply = (a, b) => a * b;
+
+    // Function with default parameters
+    function greet(name = "Guest") {
+        return `Hello ${name}`;
+    }
+    ```
+
+3. Conditionals:
+    ```javascript
+    // If statement
+    if (age >= 60) {
+        console.log("Senior Discount");
+    } else if (age >= 22) {
+        console.log("No Discount");
+    } else {
+        console.log("Student Discount");
+    }
+
+    // Switch statement
+    switch (fruit) {
+        case "banana":
+            console.log("Yellow");
+            break;
+        case "apple":
+            console.log("Red");
+            break;
+        default:
+            console.log("Unknown");
+    }
+    ```
+
+4. Loops:
+    ```javascript
+    // For loop
+    for (let i = 0; i < 5; i++) {
+        console.log(i);
+    }
+
+    // While loop
+    let i = 0;
+    while (i < 5) {
+        console.log(i);
+        i++;
+    }
+
+    // For...of loop (arrays)
+    const numbers = [1, 2, 3];
+    for (const num of numbers) {
+        console.log(num);
+    }
+
+    // For...in loop (objects)
+    const person = {name: "John", age: 25};
+    for (const key in person) {
+        console.log(`${key}: ${person[key]}`);
+    }
+    ```
+
+7. Error Handling:
+    ```javascript
+    try {
+        // Code that might throw an error
+        throw new Error("Something went wrong");
+    } catch (error) {
+        console.error(error.message);
+    } finally {
+        // Always executes
+        console.log("Cleanup");
+    }
+    ```
+
+# `let` VS `var`
+1. Scope:
+    ```javascript
+    // var is function-scoped
+    function example() {
+        var x = 1;
+        if (true) {
+            var x = 2;     // Same variable as above
+            console.log(x); // 2
+        }
+        console.log(x);     // 2
+    }
+
+    // let is block-scoped
+    function example() {
+        let x = 1;
+        if (true) {
+            let x = 2;     // Different variable
+            console.log(x); // 2
+        }
+        console.log(x);     // 1
+    }
+    ```
+
+2. Hoisting:
+    ```javascript
+    // var is hoisted and initialized with undefined
+    console.log(x);     // undefined
+    var x = 5;
+
+    // let is hoisted but not initialized (Temporal Dead Zone)
+    console.log(y);     // ReferenceError
+    let y = 5;
+    ```
+
+3. Global Object:
+    ```javascript
+    // var creates property on global object (window in browsers)
+    var globalVar = 'Hello';
+    console.log(window.globalVar); // 'Hello'
+
+    // let doesn't create property on global object
+    let globalLet = 'Hello';
+    console.log(window.globalLet); // undefined
+    ```
+
+4. Redeclaration:
+    ```javascript
+    // var allows redeclaration
+    var x = 1;
+    var x = 2; // OK
+
+    // let prevents redeclaration
+    let y = 1;
+    let y = 2; // SyntaxError
+    ```
+
+These differences make `let` generally safer to use because it:
+- Prevents accidental variable leakage
+- Makes scope more predictable
+- Catches potential errors earlier
+- Follows better block-scoping practices
+
+This is why modern JavaScript development typically favors `let` (and `const`) over `var`.
+
+# Coding Style
+
+1. Case Sensitivity:
+    ```javascript
+    // Variables - case sensitive
+    let name = "Ahmed";
+    let Name = "Omar";
+    let NAME = "Sarah";
+    // These are three different variables
+
+    // Functions - case sensitive
+    function sayHello() {}
+    function sayHELLO() {}
+    // These are two different functions
+
+    // Properties - case sensitive
+    const user = {
+        name: "John",
+        Name: "Jane",
+        firstName: "John",
+        firstname: "Jane"
+    };
+    // These are all different properties
+    ```
+
+2. Common Naming Conventions:
+    ```javascript
+    // camelCase - for variables, functions, methods
+    let firstName = "Rashid";
+    let isUserActive = true;
+    function calculateTotal() {}
+
+    // PascalCase - for classes and constructors
+    class UserAccount {
+        constructor() {}
+    }
+    const DateFormatter = class {};
+
+    // UPPERCASE_WITH_UNDERSCORES - for constants
+    const MAX_COUNT = 100;
+    const API_BASE_URL = "https://api.example.com";
+    ```
+
+# Valid and Invalid Names
+
 ```javascript
-document.getElementById("result").innerHTML = "Welcome to our store.";
-```
-A single statement that changes the content of an HTML element with id="result".
+// Valid variable names
+let firstName = "Khalid";      // Camel case
+let last_name = "Husain";      // Snake case
+let _private = "hidden";     // Leading underscore
+let $price = 99.99;         // Dollar sign
+let π = 3.14159;            // Unicode characters allowed
+let ترحيب = "مرحبا";    // Non-Latin characters allowed
+let \u0061 = "a";           // Unicode escape sequence
+let café = "coffee";        // Accented characters
+let x1 = 1;                 // Numbers allowed (not at start)
+let $_$ = "valid";          // Multiple special chars
+let _123 = "valid";         // Underscore with numbers
 
-# Multiple Statements on One Line
-```javascript
-let salary = 5000; let bonus = 1000; let total = salary + bonus;
-```
-Multiple statements can be written on the same line when separated by semicolons, though this is not recommended for readability.
+// Invalid variable names
+// let 1name = "invalid";    // Can't start with number
+// let my-name = "invalid";  // Hyphens not allowed
+// let my name = "invalid";  // No spaces
+// let class = "invalid";    // Reserved keyword
+// let for = "invalid";      // Reserved keyword
+// let @email = "invalid";   // @ not allowed
+// let my.name = "invalid";  // Dots not allowed
 
-# Code Blocks in Functions
-```javascript
-function calculateTotal() {
-    let name = "Fatima";
-    document.getElementById("greeting").innerHTML = "Hello " + name;
-    document.getElementById("total").innerHTML = "Your total is $1500";
-}
+// Reserved Keywords (cannot be used as identifiers)
+// break     case      catch     class     const     continue
+// debugger  default   delete    do        else      export
+// extends   finally   for       function  if        import
+// in        instance  new       return    super     switch
+// this      throw     try       typeof    var       void
+// while     with      yield
 ```
-Groups related statements within a function using curly brackets. The statements are executed together when the function is called.
-
-# Line Breaks in Long Statements
-```javascript
-document.getElementById("longMessage").innerHTML = 
-    "Welcome to our online store. " +
-    "We hope you enjoy your shopping experience!";
-```
-Breaks a long statement into multiple lines after operators for better readability. The logical meaning remains the same.
-
-# Variable Declaration and Assignment
-```javascript
-var price;
-let quantity;
-price = 100;
-quantity = 5;
-let total = price * quantity;
-```
-Demonstrates variable declaration using 'var' and 'let', followed by assignment of values and a calculation using these variables.
-
-# Number and String Literals
-```javascript
-15.75
-"Welcome to our store"
-'Welcome to our store'
-```
-Shows how to write number literals (with decimals) and string literals (using either single or double quotes).
-
-# Variable Assignment with Arithmetic
-```javascript
-let cost, profit;
-cost = 50;
-profit = 25;
-```
-Illustrates declaring multiple variables and assigning values, which could be used in further calculations.
-
-# Arithmetic Operations
-```javascript
-(10 + 5) * 3
-```
-Demonstrates the use of arithmetic operators and parentheses to control the order of operations.
-
-# String Concatenation
-```javascript
-"Ahmed" + " " + "Hassan"
-```
-Shows how to combine strings using the '+' operator, resulting in "Ahmed Hassan".
-
-# Variable Creation with 'let' Keyword
-```javascript
-let revenue, expenses;
-revenue = 1000 + 500;
-expenses = revenue * 0.3;
-```
-Uses 'let' to declare variables, then assigns values using both literal numbers and an expression.
-
-# Comments in JavaScript
-```javascript
-let salary = 5000;   // This is the base salary
-// salary = 6000;   This line is not executed
-```
-Demonstrates single-line comments. The first comment explains code, while the second comment prevents a line from executing.
-
-# Case Sensitivity in Variables
-```javascript
-let employeeName, employeename;
-employeeName = "Fatima";
-employeename = "Zainab";
-```
-Showcases that JavaScript treats differently cased variables as distinct, even if the spelling is the same.
-
-# Single Line Comments Before Code
-```javascript
-// Update welcome message:
-document.getElementById("welcome").innerHTML = "Welcome to Our Store";
-// Update price display:
-document.getElementById("price").innerHTML = "Total: $150";
-```
-Uses single-line comments to describe what each line of code does before the code itself.
-
-# Single Line Comments After Code
-```javascript
-let salary = 5000;      // Define base salary
-let bonus = salary + 1000;  // Add bonus to base salary
-```
-Places single-line comments at the end of each code line to explain the purpose of each operation.
-
-# Multi-line Comment Block
-```javascript
-/*
-This code section handles the user profile update:
-- Changes the user name
-- Updates the display picture
-- Refreshes the profile section
-*/
-document.getElementById("userName").innerHTML = "Kareem";
-document.getElementById("userPicture").src = "profile.jpg";
-```
-Uses a multi-line comment block to provide detailed information about several related code lines.
-
-# Preventing Code Execution with Single-line Comments
-```javascript
-let user = "Amir";
-//document.getElementById("greeting").innerHTML = "Welcome " + user;
-document.getElementById("status").innerHTML = "Online";
-```
-Uses a single-line comment to temporarily disable one line of code while letting other code execute.
-
-# Preventing Multiple Lines with Comment Block
-```javascript
-/*
-let user = "Zainab";
-let role = "Admin";
-document.getElementById("userInfo").innerHTML = user + " - " + role;
-document.getElementById("accessLevel").innerHTML = "Full Access";
-*/
-```
-Uses a multi-line comment block to temporarily disable multiple lines of code during testing or debugging.
-
-# Basic Variable Declaration
-```javascript
-let name = "Amir";
-let age = 25;
-let total = age + 5;
-```
-Shows three ways to declare variables: with a string value, number value, and calculation. Variables declared with 'let' can be reassigned later.
-
-# Constant Values
-```javascript
-const TAX_RATE = 0.15;
-const COMPANY_NAME = "Global Tech";
-const MAX_USERS = 100;
-```
-Uses const for values that shouldn't change throughout the program. Common for configuration values and constants.
-
-# Block Scope with Let
-```javascript
-let salary = 5000;
-{
-    let salary = 6000;
-    let bonus = 1000;
-    // salary inside block is 6000
-}
-// salary outside block is still 5000
-```
-Demonstrates block scope - variables declared with 'let' inside a block are only accessible within that block.
-
-# Object Declaration with Const
-```javascript
-const employee = {
-    name: "Malik",
-    position: "Developer",
-    salary: 5000
-};
-employee.salary = 6000; // Allowed
-// employee = {} // Not allowed - can't reassign const object
-```
-Shows that const objects can have their properties modified, but the object itself cannot be reassigned.
-
-# Multiple Variable Declaration
-```javascript
-let firstName = "Hassan",
-    lastName = "Ahmad",
-    age = 30;
-```
-Declares multiple variables in a single statement, making code more concise.
-
-# Variable Type Flexibility
-```javascript
-let value = "Welcome";
-value = 42; // Valid - JavaScript is dynamically typed
-```
-Shows that variables can hold different types of values, even after initial declaration (except for const).
-
-# Const with Arrays
-```javascript
-const numbers = [1, 2, 3];
-numbers.push(4); // Allowed
-numbers[0] = 10; // Allowed
-// numbers = [5, 6, 7]; // Not allowed - can't reassign const array
-```
-Demonstrates that const arrays can be modified but not reassigned entirely.
-
-# Block Scope Comparison
-```javascript
-var globalVar = "Accessible everywhere";
-let blockLet = "Block scoped";
-const blockConst = "Also block scoped";
-
-{
-    var globalVar = "Still accessible";
-    let blockLet = "New variable in block";
-    const blockConst = "New constant in block";
-}
-```
-Shows the difference between var (function/global scope) versus let/const (block scope).
