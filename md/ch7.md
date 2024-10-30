@@ -106,8 +106,6 @@ The code is saved in a separate .js file and can be reused across multiple web p
 ```
 Three different ways to include external JavaScript files: without path, with a folder path, and with a full URL. External scripts keep code organized and enable browser caching for better performance.
 
-Here are the modified JavaScript examples with Arabic names from the content:
-
 # Common Use Cases
 
 ## Changing HTML Content
@@ -248,3 +246,229 @@ Outputs messages to the browser's console, useful for debugging and development 
 </html>
 ```
 Creates a print button that triggers the browser's print dialog. This is the only way JavaScript can interact with printing functionality.
+
+# Basic Variable Declarations and Operations
+```javascript
+let price, tax, total;    
+price = 100;          
+tax = 15;          
+total = price + tax;    
+```
+Multiple statements that declare variables and perform calculations. Each statement ends with a semicolon for proper separation.
+
+# Writing to HTML Element
+```javascript
+document.getElementById("result").innerHTML = "Welcome to our store.";
+```
+A single statement that changes the content of an HTML element with id="result".
+
+# Multiple Statements on One Line
+```javascript
+let salary = 5000; let bonus = 1000; let total = salary + bonus;
+```
+Multiple statements can be written on the same line when separated by semicolons, though this is not recommended for readability.
+
+# Code Blocks in Functions
+```javascript
+function calculateTotal() {
+    let name = "Fatima";
+    document.getElementById("greeting").innerHTML = "Hello " + name;
+    document.getElementById("total").innerHTML = "Your total is $1500";
+}
+```
+Groups related statements within a function using curly brackets. The statements are executed together when the function is called.
+
+# Line Breaks in Long Statements
+```javascript
+document.getElementById("longMessage").innerHTML = 
+    "Welcome to our online store. " +
+    "We hope you enjoy your shopping experience!";
+```
+Breaks a long statement into multiple lines after operators for better readability. The logical meaning remains the same.
+
+# Variable Declaration and Assignment
+```javascript
+var price;
+let quantity;
+price = 100;
+quantity = 5;
+let total = price * quantity;
+```
+Demonstrates variable declaration using 'var' and 'let', followed by assignment of values and a calculation using these variables.
+
+# Number and String Literals
+```javascript
+15.75
+"Welcome to our store"
+'Welcome to our store'
+```
+Shows how to write number literals (with decimals) and string literals (using either single or double quotes).
+
+# Variable Assignment with Arithmetic
+```javascript
+let cost, profit;
+cost = 50;
+profit = 25;
+```
+Illustrates declaring multiple variables and assigning values, which could be used in further calculations.
+
+# Arithmetic Operations
+```javascript
+(10 + 5) * 3
+```
+Demonstrates the use of arithmetic operators and parentheses to control the order of operations.
+
+# String Concatenation
+```javascript
+"Ahmed" + " " + "Hassan"
+```
+Shows how to combine strings using the '+' operator, resulting in "Ahmed Hassan".
+
+# Variable Creation with 'let' Keyword
+```javascript
+let revenue, expenses;
+revenue = 1000 + 500;
+expenses = revenue * 0.3;
+```
+Uses 'let' to declare variables, then assigns values using both literal numbers and an expression.
+
+# Comments in JavaScript
+```javascript
+let salary = 5000;   // This is the base salary
+// salary = 6000;   This line is not executed
+```
+Demonstrates single-line comments. The first comment explains code, while the second comment prevents a line from executing.
+
+# Case Sensitivity in Variables
+```javascript
+let employeeName, employeename;
+employeeName = "Fatima";
+employeename = "Zainab";
+```
+Showcases that JavaScript treats differently cased variables as distinct, even if the spelling is the same.
+
+# Single Line Comments Before Code
+```javascript
+// Update welcome message:
+document.getElementById("welcome").innerHTML = "Welcome to Our Store";
+// Update price display:
+document.getElementById("price").innerHTML = "Total: $150";
+```
+Uses single-line comments to describe what each line of code does before the code itself.
+
+# Single Line Comments After Code
+```javascript
+let salary = 5000;      // Define base salary
+let bonus = salary + 1000;  // Add bonus to base salary
+```
+Places single-line comments at the end of each code line to explain the purpose of each operation.
+
+# Multi-line Comment Block
+```javascript
+/*
+This code section handles the user profile update:
+- Changes the user name
+- Updates the display picture
+- Refreshes the profile section
+*/
+document.getElementById("userName").innerHTML = "Kareem";
+document.getElementById("userPicture").src = "profile.jpg";
+```
+Uses a multi-line comment block to provide detailed information about several related code lines.
+
+# Preventing Code Execution with Single-line Comments
+```javascript
+let user = "Amir";
+//document.getElementById("greeting").innerHTML = "Welcome " + user;
+document.getElementById("status").innerHTML = "Online";
+```
+Uses a single-line comment to temporarily disable one line of code while letting other code execute.
+
+# Preventing Multiple Lines with Comment Block
+```javascript
+/*
+let user = "Zainab";
+let role = "Admin";
+document.getElementById("userInfo").innerHTML = user + " - " + role;
+document.getElementById("accessLevel").innerHTML = "Full Access";
+*/
+```
+Uses a multi-line comment block to temporarily disable multiple lines of code during testing or debugging.
+
+# Basic Variable Declaration
+```javascript
+let name = "Amir";
+let age = 25;
+let total = age + 5;
+```
+Shows three ways to declare variables: with a string value, number value, and calculation. Variables declared with 'let' can be reassigned later.
+
+# Constant Values
+```javascript
+const TAX_RATE = 0.15;
+const COMPANY_NAME = "Global Tech";
+const MAX_USERS = 100;
+```
+Uses const for values that shouldn't change throughout the program. Common for configuration values and constants.
+
+# Block Scope with Let
+```javascript
+let salary = 5000;
+{
+    let salary = 6000;
+    let bonus = 1000;
+    // salary inside block is 6000
+}
+// salary outside block is still 5000
+```
+Demonstrates block scope - variables declared with 'let' inside a block are only accessible within that block.
+
+# Object Declaration with Const
+```javascript
+const employee = {
+    name: "Malik",
+    position: "Developer",
+    salary: 5000
+};
+employee.salary = 6000; // Allowed
+// employee = {} // Not allowed - can't reassign const object
+```
+Shows that const objects can have their properties modified, but the object itself cannot be reassigned.
+
+# Multiple Variable Declaration
+```javascript
+let firstName = "Hassan",
+    lastName = "Ahmad",
+    age = 30;
+```
+Declares multiple variables in a single statement, making code more concise.
+
+# Variable Type Flexibility
+```javascript
+let value = "Welcome";
+value = 42; // Valid - JavaScript is dynamically typed
+```
+Shows that variables can hold different types of values, even after initial declaration (except for const).
+
+# Const with Arrays
+```javascript
+const numbers = [1, 2, 3];
+numbers.push(4); // Allowed
+numbers[0] = 10; // Allowed
+// numbers = [5, 6, 7]; // Not allowed - can't reassign const array
+```
+Demonstrates that const arrays can be modified but not reassigned entirely.
+
+# Block Scope Comparison
+```javascript
+var globalVar = "Accessible everywhere";
+let blockLet = "Block scoped";
+const blockConst = "Also block scoped";
+
+{
+    var globalVar = "Still accessible";
+    let blockLet = "New variable in block";
+    const blockConst = "New constant in block";
+}
+```
+Shows the difference between var (function/global scope) versus let/const (block scope).
