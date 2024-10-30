@@ -249,7 +249,7 @@ Outputs messages to the browser's console, useful for debugging and development 
     // String Literals
     const single = 'Hello';
     const double = "World";
-    const template = `Hello ${single}`;
+    const template = `Hello ${double}`;
     const multiLine = `
         This is a
         multi-line
@@ -287,14 +287,6 @@ Outputs messages to the browser's console, useful for debugging and development 
     // Multiple Declarations
     let a, b, c;
     let d = 1, e = 2, f = 3;
-
-    // Object Destructuring
-    const {name, age} = person;
-    const {name: firstName, age: years} = person;  // With aliases
-
-    // Array Destructuring
-    const [first, second] = numbers;
-    const [head, ...tail] = numbers;  // Rest operator
 
     // Function Declarations
     function normalFunction(a, b) {
@@ -627,37 +619,3 @@ This is why modern JavaScript development typically favors `let` (and `const`) o
     const MAX_COUNT = 100;
     const API_BASE_URL = "https://api.example.com";
     ```
-
-# Valid and Invalid Names
-
-```javascript
-// Valid variable names
-let firstName = "Khalid";      // Camel case
-let last_name = "Husain";      // Snake case
-let _private = "hidden";     // Leading underscore
-let $price = 99.99;         // Dollar sign
-let π = 3.14159;            // Unicode characters allowed
-let ترحيب = "مرحبا";    // Non-Latin characters allowed
-let \u0061 = "a";           // Unicode escape sequence
-let café = "coffee";        // Accented characters
-let x1 = 1;                 // Numbers allowed (not at start)
-let $_$ = "valid";          // Multiple special chars
-let _123 = "valid";         // Underscore with numbers
-
-// Invalid variable names
-// let 1name = "invalid";    // Can't start with number
-// let my-name = "invalid";  // Hyphens not allowed
-// let my name = "invalid";  // No spaces
-// let class = "invalid";    // Reserved keyword
-// let for = "invalid";      // Reserved keyword
-// let @email = "invalid";   // @ not allowed
-// let my.name = "invalid";  // Dots not allowed
-
-// Reserved Keywords (cannot be used as identifiers)
-// break     case      catch     class     const     continue
-// debugger  default   delete    do        else      export
-// extends   finally   for       function  if        import
-// in        instance  new       return    super     switch
-// this      throw     try       typeof    var       void
-// while     with      yield
-```
