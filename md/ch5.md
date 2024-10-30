@@ -1072,3 +1072,293 @@ try {
 }
 ?>
 ```
+
+This example demonstrates a bank transfer using PDO transactions - a critical feature for maintaining data integrity when multiple related database operations must succeed or fail as a single unit.
+
+Here's how the transaction works in this code:
+
+1. **Transaction Start**:
+   ```php
+   $pdo->beginTransaction();
+   ```
+   This marks the beginning of the transaction. All subsequent SQL operations are part of this transaction.
+
+2. **Operation 1**: Deduct money from source account
+   ```php
+   $stmt1 = $pdo->prepare("UPDATE accounts SET balance = balance - :amount 
+                          WHERE account_number = :from AND balance >= :amount");
+   ```
+   - Checks if there's sufficient balance before deduction
+   - Uses the WHERE clause to prevent overdraft
+   - Won't update if balance is insufficient
+
+3. **Operation 2**: Add money to destination account
+   ```php
+   $stmt2 = $pdo->prepare("UPDATE accounts SET balance = balance + :amount 
+                          WHERE account_number = :to");
+   ```
+
+4. **Validation**:
+   ```php
+   if ($stmt1->rowCount() == 0) {
+       throw new Exception("Insufficient balance or invalid source account");
+   }
+   ```
+   Verifies that the first operation actually updated a row
+
+5. **Transaction End**:
+   Two possible outcomes:
+   - Success: `$pdo->commit();` makes all changes permanent
+   - Failure: `$pdo->rollBack();` undoes all changes
+
+Key Benefits:
+- Atomicity: Either both accounts are updated, or neither is
+- Consistency: Money can't disappear or be created
+- Isolation: Other transactions can't see partial changes
+- Durability: Once committed, changes are permanent
+
+If anything fails (network error, insufficient funds, invalid account), the rollback ensures the database remains in a consistent state with no partial transfers.
+
+# Uploading BLOBs
+The following class is an example to explain the key concepts of BLOB uploads and PDO transactions:
+
+```php
+class DatabaseManager
+{
+    private $pdo;
+
+    public function __construct()
+    {
+        global $error;
+
+        try {
+            $this->pdo = new PDO("mysql:host=localhost;dbname=file_manager", "root");
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Create tables if they don't exist
+            $this->initializeTables();
+        } catch (PDOException $e) {
+            $error = $e->getMessage();
+        }
+    }
+
+    private function initializeTables()
+    {
+        global $error;
+
+        try {
+            $this->pdo->exec("CREATE TABLE IF NOT EXISTS files (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                file_name VARCHAR(255) NOT NULL,
+                file_size INT NOT NULL,
+                mime_type VARCHAR(100) NOT NULL,
+                upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )");
+
+            $this->pdo->exec("CREATE TABLE IF NOT EXISTS file_contents (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                file_id INT NOT NULL,
+                file_content LONGBLOB NOT NULL,
+                FOREIGN KEY (file_id) REFERENCES files(id) ON DELETE CASCADE
+            )");
+        } catch (PDOException $e) {
+            $error = $e->getMessage();
+        }
+    }
+
+    public function uploadFile($file)
+    {
+        global $error;
+
+        $this->pdo->beginTransaction();
+
+        try {
+            // Validate file
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                throw new Exception("Upload error: " . $file['error']);
+            }
+
+            $content = file_get_contents($file['tmp_name']);
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($file['tmp_name']);
+
+            // First insert metadata
+            $stmtMeta = $this->pdo->prepare("
+                INSERT INTO files (file_name, file_size, mime_type)
+                VALUES (:file_name, :file_size, :mime_type)
+            ");
+
+            $stmtMeta->execute([
+                ':file_name' => $file['name'],
+                ':file_size' => $file['size'],
+                ':mime_type' => $mimeType
+            ]);
+
+            $fileId = $this->pdo->lastInsertId();
+
+            // Then insert the blob content
+            $stmtContent = $this->pdo->prepare("
+                INSERT INTO file_contents (file_id, file_content)
+                VALUES (:file_id, :content)
+            ");
+
+            $stmtContent->execute([
+                ':file_id' => $fileId,
+                ':content' => $content
+            ]);
+
+            $this->pdo->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->pdo->rollBack();
+            $error = $e->getMessage();
+        }
+    }
+
+    public function getFiles()
+    {
+        global $error;
+
+        try {
+            $stmt = $this->pdo->prepare("
+            SELECT id, file_name, file_size, mime_type, upload_date 
+            FROM files 
+            ORDER BY upload_date DESC
+        ");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $error = $e->getMessage();
+        }
+    }
+
+    public function getFile($fileId)
+    {
+        global $error;
+
+        try {
+            $stmt = $this->pdo->prepare("
+            SELECT f.file_name, f.mime_type, f.file_size, fc.file_content
+            FROM files f
+            JOIN file_contents fc ON f.id = fc.file_id
+            WHERE f.id = ?
+        ");
+            $stmt->execute([$fileId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // var_dump($stmt->fetch(PDO::FETCH_ASSOC));
+            // exit;
+        } catch (PDOException $e) {
+            $error = $e->getMessage();
+        }
+    }
+}
+```
+
+1. BLOB (Binary Large Object) Uploads:
+- The class handles file uploads by storing them in two separate tables:
+    - `files`: Stores metadata (filename, size, mime type)
+    - `file_contents`: Stores the actual binary content as LONGBLOB
+
+```php
+// Reading file content into binary
+$content = file_get_contents($file['tmp_name']);
+
+// Storing BLOB in database
+$stmtContent->execute([
+    ':file_id' => $fileId,
+    ':content' => $content
+]);
+```
+
+2. PDO Transactions:
+    - Transactions ensure that multiple database operations either all succeed or all fail together
+    - The class uses transactions in the uploadFile method:
+
+```php
+// Start transaction
+$this->pdo->beginTransaction();
+
+try {
+    // Operation 1: Insert metadata
+    $stmtMeta->execute([...]);
+    
+    // Operation 2: Insert BLOB content
+    $stmtContent->execute([...]);
+    
+    // If both operations succeed, commit the transaction
+    $this->pdo->commit();
+} catch (Exception $e) {
+    // If any operation fails, roll back all changes
+    $this->pdo->rollBack();
+}
+```
+
+Key points:
+- File upload process:
+    - Validates the uploaded file
+    - Stores metadata in `files` table
+    - Stores binary content in `file_contents` table
+    - Uses foreign key to maintain referential integrity
+
+- Transaction benefits:
+    - Ensures data consistency
+    - Prevents orphaned records
+    - Automatically rolls back if any step fails
+
+- Use BLOBs when:
+    - Files are relatively small (usually < 1MB)
+    - You need tight data consistency with transactions
+    - You need frequent access to the files
+    - You want centralized backup with database dumps
+    - Security requires files to be in database
+
+- Avoid BLOBs when:
+    - Files are large (> 1MB)
+    - You have high traffic/concurrent access
+    - Storage space is a concern
+    - Files need to be served directly by web server
+    - You need to stream large files
+
+
+```php
+$content = file_get_contents($file['tmp_name']);
+```
+- `file_get_contents()`:
+    - Used to read the entire file into a string variable
+    - In this code, it reads from `tmp_name`, which is the temporary location where PHP stores uploaded files
+    - Advantages:
+        - Simple to use, one line of code
+        - Automatically handles the file opening and closing
+    - Disadvantages:
+        - Loads entire file into memory
+        - Can cause memory issues with large files
+        - Not suitable for files larger than PHP's memory limit
+
+```php
+// First insert metadata
+$stmtMeta->execute([
+    ':file_name' => $file['name'],
+    ':file_size' => $file['size'],
+    ':mime_type' => $mimeType
+]);
+
+$fileId = $this->pdo->lastInsertId();
+
+// Then use this ID for the content table
+$stmtContent->execute([
+    ':file_id' => $fileId,
+    ':content' => $content
+]);
+```
+- `lastInsertId()`:
+    - Used to get the auto-increment ID from the last INSERT operation
+    - Critical in this code because:
+        - We're using two tables (files and file_contents)
+        - Need to link the file content to its metadata
+        - Maintains referential integrity between tables
+        - The foreign key relationship requires this ID
+    - Without lastInsertId():
+        - We wouldn't know which ID was assigned to the metadata
+        - Couldn't properly link the BLOB content to its metadata
+        - Would need a separate query to find the inserted record
