@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="27.0.3">
   <diagram name="Page-1" id="32b2wL0Xer1wb15sUSph">
-    <mxGraphModel dx="1621" dy="591" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="5136" dy="1603" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -11,7 +11,7 @@
           <mxGeometry x="1000" y="431" width="175" height="50" as="geometry" />
         </mxCell>
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-19" value="Users&lt;div&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;(Employee&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;s, Trainer&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;s&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;hachureGap=4;fontFamily=Garamond;fontSize=18;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="310" y="312" width="120" height="60" as="geometry" />
+          <mxGeometry x="305" y="280" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-20" value="Admin" style="rounded=0;whiteSpace=wrap;html=1;hachureGap=4;fontFamily=Garamond;fontSize=18;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="-370" y="312" width="120" height="60" as="geometry" />
@@ -53,22 +53,16 @@
           <mxGeometry x="995" y="312" width="180" height="50" as="geometry" />
         </mxCell>
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-78" value="" style="shape=partialRectangle;whiteSpace=wrap;html=1;right=0;top=0;bottom=0;fillColor=none;routingCenterX=-0.5;hachureGap=4;fontFamily=Garamond;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="837.5" y="629.5" width="37.5" height="50" as="geometry" />
+          <mxGeometry x="97.5" y="170" width="37.5" height="50" as="geometry" />
         </mxCell>
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-79" value="&lt;span style=&quot;font-size: 16px;&quot;&gt;AI Model data&lt;/span&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_1;align=right;pointerEvents=1;hachureGap=4;fontFamily=Garamond;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="820" y="630.5" width="175" height="50" as="geometry" />
+          <mxGeometry x="80" y="171" width="175" height="50" as="geometry" />
         </mxCell>
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-86" value="1.5" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=light-dark(#e6d1d1, #ededed);horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;hachureGap=4;fontFamily=Garamond;rounded=1;shadow=0;glass=0;" vertex="1" parent="1">
           <mxGeometry x="-150" y="390" width="140" height="100" as="geometry" />
         </mxCell>
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-87" value="&lt;span style=&quot;text-wrap-mode: nowrap;&quot;&gt;Admin&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;text-wrap-mode: nowrap;&quot;&gt;Management&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontFamily=Garamond;fontSize=18;fontStyle=1" vertex="1" parent="7QMVq0ADoUrVYyUIM2ya-86">
           <mxGeometry y="26" width="140" height="74" as="geometry" />
-        </mxCell>
-        <mxCell id="7QMVq0ADoUrVYyUIM2ya-90" value="Notification" style="rounded=0;whiteSpace=wrap;html=1;hachureGap=4;fontFamily=Garamond;fontSize=18;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="1250" y="560" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="7QMVq0ADoUrVYyUIM2ya-92" value="Report" style="rounded=0;whiteSpace=wrap;html=1;hachureGap=4;fontFamily=Garamond;fontSize=18;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="1410" y="560" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-112" value="" style="endArrow=classic;html=1;rounded=0;hachureGap=4;fontFamily=Garamond;fontStyle=1;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="7QMVq0ADoUrVYyUIM2ya-19">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -86,12 +80,6 @@
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="790" y="442.2339999999999" as="sourcePoint" />
             <mxPoint x="990" y="442.72" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7QMVq0ADoUrVYyUIM2ya-117" value="" style="endArrow=classic;html=1;rounded=0;hachureGap=4;fontFamily=Garamond;fontStyle=1;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="7QMVq0ADoUrVYyUIM2ya-90">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1350" y="480" as="sourcePoint" />
-            <mxPoint x="1350" y="595" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-65" value="&lt;span style=&quot;text-wrap-mode: nowrap;&quot;&gt;Ai phishing&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;text-wrap-mode: nowrap;&quot;&gt;&amp;nbsp;Alert Engine&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontFamily=Garamond;fontSize=18;fontStyle=1" vertex="1" parent="1">
@@ -124,7 +112,7 @@
             <mxPoint x="-140" y="315" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="7QMVq0ADoUrVYyUIM2ya-126" value="" style="endArrow=classic;html=1;rounded=0;hachureGap=4;fontFamily=Garamond;fontStyle=1;strokeWidth=2;exitX=0.984;exitY=0.374;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="7QMVq0ADoUrVYyUIM2ya-65" target="7QMVq0ADoUrVYyUIM2ya-19">
+        <mxCell id="7QMVq0ADoUrVYyUIM2ya-126" value="" style="endArrow=classic;html=1;rounded=0;hachureGap=4;fontFamily=Garamond;fontStyle=1;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="7QMVq0ADoUrVYyUIM2ya-65" target="7QMVq0ADoUrVYyUIM2ya-19">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="20" y="306" as="sourcePoint" />
             <mxPoint x="120" y="284" as="targetPoint" />
@@ -133,6 +121,21 @@
         <mxCell id="7QMVq0ADoUrVYyUIM2ya-127" value="Sends alerts" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];sketch=1;hachureGap=4;jiggle=2;curveFitting=1;fontFamily=Architects Daughter;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DArchitects%2BDaughter;" vertex="1" connectable="0" parent="7QMVq0ADoUrVYyUIM2ya-126">
           <mxGeometry x="0.1788" y="4" relative="1" as="geometry">
             <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7QMVq0ADoUrVYyUIM2ya-129" value="" style="endArrow=classic;html=1;rounded=0;hachureGap=4;fontFamily=Garamond;fontStyle=1;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="7QMVq0ADoUrVYyUIM2ya-87">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1" y="449" as="sourcePoint" />
+            <mxPoint x="100" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7QMVq0ADoUrVYyUIM2ya-132" value="Report" style="rounded=0;whiteSpace=wrap;html=1;hachureGap=4;fontFamily=Garamond;fontSize=18;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="100" y="431" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="7QMVq0ADoUrVYyUIM2ya-135" value="" style="endArrow=classic;html=1;rounded=0;hachureGap=4;fontFamily=Garamond;fontStyle=1;strokeWidth=2;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="7QMVq0ADoUrVYyUIM2ya-64" target="7QMVq0ADoUrVYyUIM2ya-79">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-2.5" y="222" as="sourcePoint" />
+            <mxPoint x="97.5" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
